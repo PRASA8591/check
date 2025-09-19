@@ -1,0 +1,60 @@
+:root{
+  --bg:#f7fbff;
+  --card:#fff;
+  --accent:#2563eb; /* blue */
+  --accent-2:#06b6d4; /* teal */
+  --muted:#6b7280;
+  --danger:#ef4444;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#111}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,var(--card),#f1f7ff);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.brand{font-weight:700;color:var(--accent)}
+.container{max-width:1000px;margin:28px auto;padding:16px}
+.card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 24px rgba(32,41,61,0.04)}
+.centered-card{height:100vh;display:flex;align-items:center;justify-content:center}
+.centered-card .card{width:360px;padding:28px;text-align:center}
+input,select{display:block;width:100%;padding:10px;margin-top:6px;margin-bottom:12px;border-radius:8px;border:1px solid #e6eefb}
+label{font-size:14px;color:var(--muted)}
+.btn{background:var(--accent);color:white;padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+.btn.outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn.danger{background:var(--danger)}
+.error{color:var(--danger);font-size:13px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #f1f5f9;text-align:left}
+.total-row{font-weight:700;background:#fbfeff}
+@media (max-width:700px){
+  .controls{flex-direction:column;gap:12px}
+  .centered-card .card{width:92%}
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+table th {
+  background: #3633d8;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 0 2px;
+  cursor: pointer;
+}
+
+.btn-logout {
+  float: right;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}

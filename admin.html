@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel — Attendance</title>
+
+  <!-- Immediate access guard (runs before anything else) -->
+  <script>
+    try {
+      const logged = localStorage.getItem('loggedInUser');
+      const u = logged ? JSON.parse(logged) : null;
+      if (!u || u.role !== 'admin') {
+        // not an admin -> redirect to login page
+        window.location.replace('index.html');
+      }
+    } catch (e) {
+      window.location.replace('index.html');
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles/styles.css">
+  <style>
+    /* small admin specific styles + modal + popup */
+    .container { max-width:1100px; margin:20px auto; padding:12px; }
+    h2{ display:inline-block; margin:0; }
+    .btn-logout{ float:right; background:#ef4444; color:#fff; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; }
+    .btn { padding:6px 10px; margin:2px; border-radius:6px; border:none; background:#2563eb; color:#fff; cursor:pointer; }
+    .form-box{ margin:12px 0; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    input, select { padding:6px; border-radius:6px; border:1px solid #d1d5db; }
+
+    table { width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; }
+    th, td { border:1px solid #e6eefb; padding:8px; text-align:center; }
+    th { background:#1976d2; color:white; font-weight:600; }
+    @media (max-width:700px) {
+      th,td{ padding:6px; font-size:12px; }
+      .form-box{ flex-direction:column; align-items:flex-start; }
+    }
+
+    /* popup */
+    #popup { position:fixed; top:16px; right:16px; display:none; padding:10px 14px; color:#fff; border-radius:8px; z-index:9999; box-shadow:0 6px 18px rgba(2,6,23,0.15); }
+
+    /* modal overlay */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); align-items:center; justify-content:center; z-index:10000; }
+    .modal .modal-content { background:#fff; padding:18px; border-radius:10px; width:320px; max-width:90%; box-shadow:0 10px 30px rgba(2,6,23,0.2); }
+    .modal .modal-content h3{ margin-top:0; }
+    .modal .row { margin:8px 0; }
+    .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+    .muted { color:#6b7280; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Admin Panel</h2>
+    <button id="logoutBtn" class="btn-logout">Logout</button>
+
+    <!-- Add User Form -->
+    <form id="addUserForm" class="form-box" autocomplete="off">
+      <input id="newUsername" placeholder="Username" required />
+      <input id="newPassword" placeholder="Password" type="password" required />
+      <select id="newRole">
+        <option value="user">user</option>
+        <option value="admin">admin</option>
+      </select>
+      <button type="submit" class="btn">Add user</button>
+    </form>
+
+    <!-- Users list -->
+    <h3>All users</h3>
+    <table>
+      <thead><tr><th>Username</th><th>Role</th><th>Actions</th></tr></thead>
+      <tbody id="usersList"></tbody>
+    </table>
+
+    <!-- Attendance Viewer -->
+    <h3 style="margin-top:18px;">Check user attendance</h3>
+    <div class="form-box">
+      <select id="selectUser" style="min-width:200px"></select>
+      <input id="year" type="number" value="2025" min="2000" max="2100" />
+      <select id="month">
+        <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+        <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+        <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
+        <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+      </select>
+      <button id="checkAttendanceBtn" class="btn">Check</button>
+    </div>
+
+    <div id="attendanceSection" style="display:none;">
+      <h4>Attendance for <span id="selectedUser"></span> — <span id="selectedMonth"></span> <span id="selectedYear"></span></h4>
+      <table>
+        <thead><tr><th>Date</th><th>In Time</th><th>Out Date</th><th>Out Time</th><th>Hours Worked</th></tr></thead>
+        <tbody id="attendanceBody"></tbody>
+      </table>
+      <h4 style="margin-top:8px">Total Hours: <span id="totalHours">0</span></h4>
+    </div>
+  </div>
+
+  <!-- popup -->
+  <div id="popup"></div>
+
+  <!-- Edit modal -->
+  <div id="editModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h3>Edit user</h3>
+      <div class="row">
+        <label class="muted">Username</label>
+        <input id="editUsername" />
+      </div>
+      <div class="row">
+        <label class="muted">Password</label>
+        <input id="editPassword" type="password" />
+      </div>
+      <div class="row">
+        <label class="muted">Role</label>
+        <select id="editRole"><option value="user">user</option><option value="admin">admin</option></select>
+      </div>
+      <div class="actions">
+        <button id="cancelEditBtn" class="btn">Cancel</button>
+        <button id="saveEditBtn" class="btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm delete modal -->
+  <div id="confirmModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h3 id="confirmTitle">Confirm delete</h3>
+      <p id="confirmText" class="muted"></p>
+      <div class="actions">
+        <button id="confirmNo" class="btn">No</button>
+        <button id="confirmYes" class="btn" style="background:#ef4444">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

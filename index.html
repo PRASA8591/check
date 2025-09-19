@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login — Attendance System</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 380px;
+      background: #fff;
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 20px;
+      color: #1976d2;
+    }
+    .logo img { height: 40px; }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    .btn {
+      width: 100%;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #1258a8;
+    }
+    #popup {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: none;
+      padding: 10px 14px;
+      color: #fff;
+      border-radius: 8px;
+      z-index: 9999;
+      box-shadow: 0 6px 18px rgba(2,6,23,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo"> Attendance System
+    </div>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" id="username" required>
+      <label>Password</label>
+      <input type="password" id="password" required>
+      <button type="submit" class="btn">Login</button>
+    </form>
+  </div>
+
+  <div id="popup"></div>
+
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
